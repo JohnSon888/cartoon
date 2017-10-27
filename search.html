@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>看漫画</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="mui/mui.min.css" rel="stylesheet" />
+    <link href="fonts/iconfont.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-text-size-adjust: none;
+    }
+
+    html {
+        font-size: 10px;
+        height: 100%;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        font-size: 1.2em;
+        height: 100%;
+    }
+
+    ul,
+    li {
+        list-style: none;
+    }
+
+    .tab {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        height: 44px;
+        line-height: 44px;
+        /*border-bottom: 1px solid #ff3c3c;*/
+        background-color: #eee;
+        margin-top: 44px;
+    }
+
+    .tab .item {
+        display: block;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .tab .item.cur {
+        border-bottom: 2px solid #ff3c3c;
+        color: #ff3c3c;
+    }
+
+    .content {
+        background-color: #fff;
+    }
+
+    .content .item {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        -webkit-box-align: center;
+        box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        padding: 3.125%;
+        /*border-bottom: 1px solid #ddd;*/
+        color: #333;
+        text-decoration: none;
+    }
+
+    .content .item img {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ddd;
+    }
+
+    .content .item h3 {
+        display: block;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 100%;
+        max-height: 40px;
+        overflow: hidden;
+        line-height: 20px;
+        margin: 0 10px;
+        font-size: 1.2rem;
+    }
+
+    .content .item .date {
+        display: block;
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+    }
+
+    .opacity {
+        -webkit-animation: opacity 0.3s linear;
+        animation: opacity 0.3s linear;
+    }
+
+    .goods-list {
+        display: none;
+    }
+
+    #msg {
+        text-align: center;
+        display: none;
+    }
+
+    @-webkit-keyframes opacity {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes opacity {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    #wrapper {
+        width: 100%;
+        height: calc(100% - 88px);
+        position: relative;
+    }
+
+    .clearfix::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .icon-chazhao {
+        float: right;
+        color: #ea2329;
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        line-height: 44px;
+        color: #ea2329;
+        text-align: right;
+        margin-right: 0.8rem;
+    }
+
+    .search {
+        width: 100%;
+        height: 4rem;
+        line-height: 4rem;
+        margin-top: 4.8rem;
+        position: relative;
+        background-color: #fff;
+        z-index: 20;
+        /*display: none;*/
+    }
+
+    .search.active {
+        display: block;
+    }
+
+    .search:after {
+        position: absolute;
+        content: '';
+        right: 2rem;
+        top: -0.7rem;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid #fff;
+    }
+
+    .search input {
+        display: block;
+        background-color: white;
+        border: none;
+        width: 74%;
+        height: 4rem;
+        border-radius: 0;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        padding-left: 0.09rem;
+        font-size: 1.3rem;
+        margin-bottom: 0;
+        padding: 0;
+        text-indent: 0.5rem;
+    }
+
+    .search button {
+        width: 8rem;
+        height: 3rem;
+        font-size: 1.3rem;
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #ea2329;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+    }
+    </style>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="iconfont icon-jiantou01" href="javascript:void(0);"></a>
+        <h1 class="mui-title">看漫画</h1>
+    </header>
+    <div class="search">
+        <input type="text" name="search_keywords" placeholder="请输入搜索内容" data-autocompleter="/index.php/wap/search-associate.html" class="key">
+        <button class="submit" type="submit">搜索</button>
+    </div>
+    <div id="wrapper">
+        <div class="content">
+            <ul class="pro-list-grid goods-list lists clearfix" style="display: block;"></ul>
+            <div id="msg">上拉加载更多！</div>
+        </div>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="js/iscroll.js"></script>
+    <script>
+    $(function() {
+        var pushUp = true;
+        var content = '';
+        // tab
+        // 每页展示10个
+        // //每次下拉加载条数
+        var pageSize = 10;
+        var pageNo = 1;
+        var baseUrl = 'http://app.isoule.cn:8080'; 
+        // listUrl
+        var ajaxList = baseUrl + '/a/app/appContent/contentList';
+
+        function init() {
+            var flag = false; //上拉加载标记
+            var myScroll = new iScroll("wrapper", {
+                preventDefault: false,
+                onScrollMove: function() {
+                    if (!pushUp) return;
+                    if (this.y + this.scrollerH - this.wrapperH < -20) {
+                        flag = true;
+                        $('#msg').show();
+                        // myScroll.refresh();
+                    } else {
+                        flag = false;
+                        $('#msg').hide();
+                        // myScroll.refresh();
+                    }
+                },
+                onTouchEnd: function() {
+                    if (flag) {
+                        flag = false;
+                        $('#msg').hide();
+                        pageNo++;
+                        handleList(pageNo);
+                    }
+                }
+            });
+            var handleList = function(pageNo) {
+                $.ajax({
+                    url: ajaxList,
+                    data: {
+                        content: content,
+                        pageNo: pageNo,
+                        pageSize: pageSize
+                    },
+                    dataType: 'json', //服务器返回json格式数据
+                    type: 'GET', //HTTP请求类型
+                    timeout: 5000, //超时时间设置为10秒
+                    success: function(data) {
+                        console.log('data');
+                        console.log(JSON.stringify(data));
+                        var str = ''
+                        if (data.length != 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                str += '<li data-type="' + data[i].id + '">' +
+                                    '<div class="thumbnail">' +
+                                    '<div class="thumb-img">' +
+                                    '<a href="detail.html?itemId="' + data[i].id + '"><img src="' + data[i].imageUrl + '" alt=""></a>' +
+                                    '</div>' +
+                                    '<div class="caption">' +
+                                    '<h1 class="goods-title">' + data[i].title + '</h1>' +
+                                    '<div class="price">' +
+                                    '<div class="amount">' + data[i].summary +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</li>';
+
+                            }
+                        } else {
+                            str = '<li style="text-align:center;width:100%;">没有更多数据了！</li>'
+                            pushUp = false;
+                        }
+                        $('.goods-list').append(str);
+                        myScroll.refresh();
+                    },
+                    error: function(xhr, type) {
+                        // alert('Ajax error!');
+                        // 即使加载出错，也得重置
+                    }
+                });
+            }
+        }
+        // 提交
+        $('.submit').click(function(event) {
+            var that = $(this),
+                input = $(this).siblings('input'),
+                content = input.val();
+            $.ajax({
+                url: ajaxList,
+                data: {
+                    content: content,
+                    pageNo: pageNo,
+                    pageSize: pageSize
+                },
+                dataType: 'json', //服务器返回json格式数据
+                type: 'GET', //HTTP请求类型
+                timeout: 5000, //超时时间设置为10秒
+                success: function(data) {
+                    console.log('data111');
+                    console.log(JSON.stringify(data));
+                    var str = ''
+                    if (data.length != 0) {
+                        for (var i = 0; i < data.length; i++) {
+                            str += '<li data-type="' + data[i].id + '">' +
+                                '<div class="thumbnail">' +
+                                '<div class="thumb-img">' +
+                                '<a href="detail.html?itemId="' + data[i].id + '"><img src="' + data[i].imageUrl + '" alt=""></a>' +
+                                '</div>' +
+                                '<div class="caption">' +
+                                '<h1 class="goods-title">' + data[i].title + '</h1>' +
+                                '<div class="price">' +
+                                '<div class="amount">' + data[i].summary +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</div>' +
+                                '</li>';
+
+                        }
+                    } else {
+                        str = '<li style="text-align:center;width:100%;">没有更多数据了！</li>'
+                        pushUp = false;
+                    }
+                    $('.goods-list').html('');
+                    $('.goods-list').append(str);
+                    input.val('');
+                    init();
+                },
+                error: function(xhr, type) {
+                    // alert('Ajax error!');
+                    // 即使加载出错，也得重置
+                }
+            });
+
+        });
+        $('.icon-jiantou01').click(function() {
+            window.history.go(-1);
+        });
+
+    });
+    </script>
+</body>
+
+</html>

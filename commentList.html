@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>评论</title>
+    <link href="mui/mui.min.css" rel="stylesheet" />
+    <link href="fonts/iconfont.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <style>
+    .mui-content {
+        margin-bottom: 44px;
+    }
+
+    .comment-list {
+        padding: 10px;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .comment-list .user-info {
+        justify-content: flex-start;
+    }
+
+    .comment-list .thumb {
+        width: 40px;
+        height: 40px;
+    }
+
+    .comment-list .thumb img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .comment-list .info .user {
+        font-size: 17px;
+        font-weight: 600;
+        color: #000;
+    }
+
+    .comment-list .info .time {
+        font-size: 13px;
+        color: #e5e5e5;
+    }
+
+    .comment-list .comment-con {
+        font-size: 16px;
+        margin-top: 5px;
+    }
+
+    .comment-input {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 44px;
+        line-height: 44px;
+        border-top: 1px solid #e5e5e5;
+        background: #e6e6e6;
+    }
+
+    .comment-input input {
+        width: 77%;
+        margin-right: 8px;
+        margin-left: 8px;
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+    }
+
+    .comment-input span {
+        color: #fff;
+        padding: 5px 8px;
+        font-size: 14px;
+        border: 1px solid #ea2329;
+        border-radius: 3px;
+        background: #ea2329;
+    }
+
+    .mui-toast-container {
+        bottom: 50%;
+    }
+    </style>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <a class="iconfont icon-jiantou01" href="javascript:void(0);"></a>
+        <h1 class="mui-title">评论</h1>
+    </header>
+    <div class="mui-content">
+    </div>
+    <div class="comment-input">
+        <input type="text" name="" placeholder="来说两句吧"><span>发表</span>
+    </div>
+    <script src="js/zepto.min.js"></script>
+    <script src="mui/mui.min.js"></script>
+    <script type="text/javascript">
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    };
+    var itemId = getQueryString('itemId');
+    var baseUrl = 'http://app.isoule.cn:8080';
+    var HOST_URL = baseUrl + '/a/app/appContent/detail?id=' + itemId;
+    var commentList = baseUrl + '/a/app/appComment/commentList';
+    var commentAdd = baseUrl + '/a/app/appComment/add';
+
+    // 获取当前时间
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+            " " + date.getHours() + seperator2 + date.getMinutes() +
+            seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    $.ajax({
+        url: commentList,
+        data: {
+            contentId: itemId,
+            pageNo: 1,
+            pageSize: 10
+        },
+        dataType: 'json', //服务器返回json格式数据
+        type: 'GET', //HTTP请求类型
+        timeout: 5000, //超时时间设置为10秒
+        success: function(res) {
+            console.log(JSON.stringify(res));
+            for (var i = 0; i < res.length; i++) {
+                var str = '<div class="comment-list">' +
+                    '<div class="user-info flex">' +
+                    '<div class="thumb">' +
+                    '<img src="images/avatar1.jpg">' +
+                    '</div>' +
+                    '<div class="info">' +
+                    '<p class="user">网友</p>' +
+                    '<p class="time">' + res[i].createDate + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<p class="comment-con">' + res[i].content + '</p>' +
+                    '</div>';
+                $('.mui-content').append(str);
+            }
+        },
+        error: function(xhr, type) {
+            console.log('Ajax error!');
+        }
+    });
+
+    $('.comment-input span').click(function(event) {
+        var content = $('.comment-input input').val();
+        var userName = Math.random().toString(36).substr(2);
+        // console.log(content);
+        $.ajax({
+            url: commentAdd,
+            data: {
+                contentId: itemId,
+                content: content
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'GET', //HTTP请求类型
+            timeout: 5000, //超时时间设置为10秒
+            success: function(res) {
+                console.log(res);
+                var str = '<div class="comment-list">' +
+                    '<div class="user-info flex">' +
+                    '<div class="thumb">' +
+                    '<img src="images/avatar1.jpg">' +
+                    '</div>' +
+                    '<div class="info">' +
+                    '<p class="user">kmh_' + userName + '</p>' +
+                    '<p class="time">' + getNowFormatDate() + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<p class="comment-con">' + content + '</p>' +
+                    '</div>';
+                $('.mui-content').append(str);
+                $('.comment-input input').val('');
+                mui.toast('发表成功');
+            },
+            error: function(xhr, type) {
+                console.log('Ajax error!');
+            }
+        });
+    });
+
+    $('.icon-jiantou01').click(function() {
+        window.history.go(-1);
+    });
+    </script>
+</body>
+
+</html>

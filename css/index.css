@@ -1,0 +1,276 @@
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    color: #333;
+    background-color: #fff;
+}
+
+h1 {
+    font-size: 14px;
+}
+
+p {
+    margin-bottom: 0px;
+}
+.flex{
+        display: flex;
+    }
+.mui-bar {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 44px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border-bottom: 0;
+    background-color: #fff;
+    -webkit-box-shadow: 0 1px 6px #ccc;
+    box-shadow: 0 1px 6px #ccc;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+.mui-bar .mui-title {
+    right: 40px;
+    left: 40px;
+    display: inline-block;
+    overflow: hidden;
+    width: auto;
+    margin: 0;
+    text-overflow: ellipsis;
+}
+.mui-bar h1 {
+    font-size: 20px;
+    color: #ea2329;
+}
+.mui-title {
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 44px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    margin: 0 -10px;
+    padding: 0;
+    text-align: center;
+    white-space: nowrap;
+    color: #000;
+}
+.mui-content{
+    background: #fff;
+}
+.container {
+    padding-top: 2.8rem;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 0;
+}
+.bbc-pullrefresh-top {
+    top: 44px;
+}
+.bbc-tab-bar .mui-slider-indicator.mui-segmented-control {
+    background-color: #fff;
+}
+.mui-slider-indicator.mui-segmented-control {
+    background: #f0f0f0;
+}
+.mui-fullscreen .mui-segmented-control~ .mui-slider-group {
+    width: 100%;
+    height: auto;
+    top: 40px;
+    bottom: 0;
+    position: absolute;
+}
+.mui-segmented-control.mui-scroll-wrapper {
+    height: 45px;
+}
+
+.mui-segmented-control.mui-scroll-wrapper .mui-control-item {
+    width: 80px;
+}
+
+.mui-segmented-control.mui-scroll-wrapper .mui-control-item.mui-active {
+    color: #ea2329;
+}
+
+.mui-fullscreen .mui-segmented-control~.mui-slider-group {
+    top: 39px;
+}
+
+.mui-slider-group .mui-scroll-wrapper {
+    /*padding-top: 5px;*/
+}
+
+.pro-list-grid {
+    margin-bottom: .5rem;
+}
+
+.pro-list-grid:after {
+    content: "\0020";
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.pro-list-grid li {
+    float: left;
+    width: 50%;
+    border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 0.2rem;
+}
+
+
+.pro-list-grid li .thumbnail {
+    display: block;
+}
+
+.pro-list-grid li .thumbnail .thumb-img {
+    display: -webkit-box;
+    position: relative;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    width: auto;
+    background: #f8f8f8;
+}
+
+.pro-list-grid li .thumbnail .thumb-img:after {
+    display: block;
+    padding-top: 100%;
+    content: '';
+}
+
+.pro-list-grid li .thumbnail .thumb-img a,
+.pro-list-grid li .thumbnail .thumb-img .imgcover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.pro-list-grid li .thumbnail .thumb-img img {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+
+.pro-list-grid li .thumbnail .caption {
+    padding: 0.2rem 0.4rem;
+    background: #fff;
+    overflow: hidden;
+    height: 6rem;
+}
+
+.pro-list-grid li:nth-child(2n+1) {
+    padding-left: 0;
+}
+
+.pro-list-grid li:nth-child(2n) {
+    padding-right: 0;
+}
+
+.thumb {
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    margin-right: 0.4rem;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 0.2rem;
+    border: 1px solid #e4e5e6;
+    overflow: hidden;
+}
+
+.thumb img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+}
+
+.thumbnail .caption .goods-title {
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.thumbnail .caption .price {
+    display: -webkit-box;
+    -webkit-box-align: center;
+    margin-top: 0.5rem;
+}
+
+.thumbnail .caption .price .amount {
+    -webkit-box-flex: 1;
+    color: #ccc;
+    font-size: 13px;
+    -webkit-box-pack: center;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.thumbnail .caption .price .purchased {
+    -webkit-box-flex: 1;
+    color: #999;
+    text-align: right;
+    font-size: 0.7rem;
+}
+
+.mui-bar {
+    background: #fff;
+}
+
+.mui-bar h1 {
+    font-size: 20px;
+    color: #ea2329;
+}
+.clearfix:before, .clearfix:after { content: "\0020"; display: block; height: 0; overflow: hidden; }  
+.clearfix:after { clear: both; }  
+.clearfix { zoom: 1; }  
+
+.bbc-tab-bar .mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+  color: #ea2329;
+}
+
+.bbc-tab-bar .mui-segmented-control.mui-segmented-control-inverted~ .mui-slider-progress-bar {
+  background-color: #ea2329;
+}
+
+.bbc-badge {
+  background: #fff;
+  color: #ea2329;
+  -webkit-box-shadow: 0 0 0 1px #ea2329, 0 0 0 3px #FFF;
+  box-shadow: 0 0 0 1px #ea2329, 0 0 0 3px #FFF;
+}
+
+.bbc-tab-nav.mui-segmented-control {
+  border-color: #ea2329;
+}
+
+.bbc-tab-nav.mui-segmented-control .mui-control-item {
+  border-color: #ea2329;
+  color: #ea2329;
+}
+
+.bbc-tab-nav.mui-segmented-control .mui-control-item.mui-active {
+  background: #ea2329;
+  color: #fff;
+}
+ .icon-jiantou01{
+	    	display: inline-block;
+	    width: 44px;
+	    height: 44px;
+	    line-height: 44px;
+	    color: #ea2329;
+    }

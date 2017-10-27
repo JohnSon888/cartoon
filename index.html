@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>秘漫</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="mui/mui.min.css" rel="stylesheet" />
+    <link href="fonts/iconfont.css" rel="stylesheet" />
+    <link href="css/index.css" rel="stylesheet" />
+    <!-- <link rel="stylesheet" href="css/style.css"> -->
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        -webkit-text-size-adjust: none;
+    }
+
+    html {
+        font-size: 10px;
+        height: 100%;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        font-size: 1.2em;
+        height: 100%;
+    }
+
+    ul,
+    li {
+        list-style: none;
+    }
+
+    .tab {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        height: 44px;
+        line-height: 44px;
+        /*border-bottom: 1px solid #ff3c3c;*/
+        background-color: #eee;
+        margin-top: 44px;
+    }
+
+    .tab .item {
+        display: block;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+        color: #333;
+        text-decoration: none;
+    }
+
+    .tab .item.cur {
+        border-bottom: 2px solid #ff3c3c;
+        color: #ff3c3c;
+    }
+
+    .content {
+        background-color: #fff;
+    }
+
+    .content .item {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        -webkit-box-align: center;
+        box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        padding: 3.125%;
+        /*border-bottom: 1px solid #ddd;*/
+        color: #333;
+        text-decoration: none;
+    }
+
+    .content .item img {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ddd;
+    }
+
+    .content .item h3 {
+        display: block;
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        -ms-flex: 1;
+        flex: 1;
+        width: 100%;
+        max-height: 40px;
+        overflow: hidden;
+        line-height: 20px;
+        margin: 0 10px;
+        font-size: 1.2rem;
+    }
+
+    .content .item .date {
+        display: block;
+        height: 20px;
+        line-height: 20px;
+        color: #999;
+    }
+
+    .opacity {
+        -webkit-animation: opacity 0.3s linear;
+        animation: opacity 0.3s linear;
+    }
+
+    .goods-list {
+        display: none;
+    }
+
+    #msg {
+        text-align: center;
+        display: none;
+    }
+
+    @-webkit-keyframes opacity {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes opacity {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    #wrapper {
+        width: 100%;
+        height: calc(100% - 88px);
+        position: relative;
+    }
+
+    .clearfix::after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+
+    .icon-chazhao {
+        float: right;
+        color: #ea2329;
+        display: inline-block;
+        width: 44px;
+        height: 44px;
+        line-height: 44px;
+        color: #ea2329;
+        text-align: right;
+        margin-right: 0.8rem;
+    }
+
+    </style>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav">
+        <h1 class="mui-title">看漫画</h1>
+        <a class="iconfont icon-chazhao" href="javascript:void(0);"></a>
+    </header>
+    <!-- <div class="container"> -->
+    <div class="tab">
+    </div>
+    <div id="wrapper">
+        <div class="content">
+        </div>
+    </div>
+    <!-- </div> -->
+    <script src="js/zepto.min.js"></script>
+    <script src="js/iscroll.js"></script>
+    <script>
+    $(function() {
+        var haxiObj = [];
+        var itemIndex = 0;
+        var itemId = 0;
+
+        // tab
+        // 每页展示10个
+        // //每次下拉加载条数
+        var pageSize = 10;
+        var baseUrl = 'http://app.isoule.cn:8080';
+        // var baseUrl = 'http://192.168.1.102:8080/JGG';
+        // listUrl
+        var ajaxTab = baseUrl + '/a/app/appColumn/columnList?typeId=1';
+        var ajaxList = baseUrl + '/a/app/appContent/contentList';
+
+        // 渲染tab
+        var createTabElement = function(el, result) {
+            var str = '';
+            for (var i = 0; i < result.length; i++) {
+                str += '<a class="mui-control-item item" href="javascript:;' + result[i].id + '" data-type="' + result[i].id + '">' + result[i].name + '</a>';
+                haxiObj.push({
+                    pageNo: 1,
+                    tabId: result[i].id,
+                    index: i,
+                    content: '',
+                    pushUp: true,
+                })
+            }
+            el.html(str);
+        };
+
+        // 渲染列表box
+        var createListBoxElement = function(el, result) {
+            // var str = "";
+            for (var i = 0; i < result.length; i++) {
+                var str = '<ul class=" pro-list-grid goods-list lists clearfix" data-count="1"></ul>';
+                el.append(str);
+            }
+            el.append('<div id="msg">上拉加载更多！</div>')
+            el.find('.goods-list').eq(0).show();
+        }
+
+        $.ajax({
+            url: ajaxTab,
+            data: {
+                pageNo: 1,
+                pageSize: pageSize
+            },
+            dataType: 'json', //服务器返回json格式数据
+            type: 'GET', //HTTP请求类型
+            timeout: 5000, //超时时间设置为10秒
+            success: function(res) {
+                console.log(JSON.stringify(res));
+                // tab
+                createTabElement($('.tab'), res);
+                $('.tab .item').eq(0).addClass('cur');
+                // list-box
+                createListBoxElement($('.content'), res);
+                init();
+            },
+            error: function(xhr, type) {
+                console.log('Ajax error!');
+                // 即使加载出错，也得重置
+            }
+        });
+
+        function init() {
+            var flag = false; //上拉加载标记
+            var myScroll = new iScroll("wrapper", {
+                preventDefault: false,
+                onScrollMove: function() {
+                    if (!haxiObj[itemIndex].pushUp) return;
+                    if (this.y + this.scrollerH - this.wrapperH < -20) {
+                        flag = true;
+                        $('#msg').show();
+                        // myScroll.refresh();
+                    } else {
+                        flag = false;
+                        $('#msg').hide();
+                        // myScroll.refresh();
+                    }
+                },
+                onTouchEnd: function() {
+                    if (flag) {
+                        flag = false;
+                        $('#msg').hide();
+                        haxiObj[itemIndex].pageNo++;
+                        handleList(haxiObj[itemIndex])
+                    }
+                }
+            });
+            var handleList = function(obj) {
+                $.ajax({
+                    url: ajaxList,
+                    data: {
+                        appColumnId: obj.tabId,
+                        pageNo: obj.pageNo,
+                        pageSize: pageSize
+                    },
+                    dataType: 'json', //服务器返回json格式数据
+                    type: 'GET', //HTTP请求类型
+                    timeout: 5000, //超时时间设置为10秒
+                    success: function(data) {
+                        console.log('data');
+                        console.log(JSON.stringify(data));
+                        var str = ''
+                        if (data.length != 0) {
+                            for (var i = 0; i < data.length; i++) {
+                                str += '<li data-type="' + data[i].id + '">' +
+                                    '<div class="thumbnail">' +
+                                    '<div class="thumb-img">' +
+                                    '<a href="javascript:void(0);"><img src="' + data[i].imageUrl + '" alt=""></a>' +
+                                    '</div>' +
+                                    '<div class="caption">' +
+                                    '<h1 class="goods-title">' + data[i].title + '</h1>' +
+                                    '<div class="price">' +
+                                    '<div class="amount">' + data[i].summary +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</li>';
+
+                            }
+                        } else {
+                            str = '<li style="text-align:center;width:100%;">没有更多数据了！</li>'
+                            haxiObj[itemIndex].pushUp = false;
+                        }
+                        $('.content').find('.goods-list').eq(obj.index).append(str);
+                        myScroll.refresh();
+                    },
+                    error: function(xhr, type) {
+                        // alert('Ajax error!');
+                        // 即使加载出错，也得重置
+                    }
+                });
+            }
+            // 加载第一个列表
+            handleList(haxiObj[0]);
+            //tabs切换
+            $('.tab').on('click', '.item', function() {
+                var index = $(this).index();
+                $(this).addClass('cur').siblings().removeClass('cur');
+                $('.goods-list').eq(index).show().siblings().hide();
+                itemIndex = index;
+                handleList(haxiObj[index]);
+                myScroll.refresh();
+            })
+
+        }
+        // 搜索框
+        $('.icon-chazhao').click(function(event) {
+            location.href = "search.html";
+            
+        });
+
+        $('.content').on('click','.pro-list-grid li',function(event) {
+                var itemId = $(this).attr('data-type');
+                console.log('111111111');
+                console.log(itemId);
+            location.href = "detail.html?itemId="+itemId;
+            console.log("detail.html?itemId="+itemId);
+        });
+
+
+    });
+    </script>
+</body>
+
+</html>
