@@ -316,6 +316,7 @@
                             str = '<li style="text-align:center;width:100%;">没有更多数据了！</li>'
                             haxiObj[itemIndex].pushUp = false;
                         }
+                        $('.content').find('.goods-list').eq(obj.index).html('');
                         $('.content').find('.goods-list').eq(obj.index).append(str);
                         myScroll.refresh();
                     },
